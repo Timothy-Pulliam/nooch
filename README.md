@@ -10,19 +10,14 @@ $ cd nooch
 $ npm i
 ```
 
-Edit environment variables
+Edit environment variables, and start the application
 
 ```
 $ cp .env.template .env
-```
-
-Start application
-
-```
 $ npm run dev
 ```
 
-(optional) You can also build a docker imageusing docker-compose.
+(optional) build a docker image using docker-compose.
 
 ```
 $ docker-compose up --build

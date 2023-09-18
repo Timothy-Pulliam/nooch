@@ -1,12 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-    </head>
-    <body>
-        <h1>Hello {{ name }}</h1>
-    </body>
-</html>
+{% extends "base.njk" %}
+
+{% block body %}
+
+    <section class="hero has-text-centered">
+        <div class="hero-body">
+            <p class="title">
+        Call to Action
+      </p>
+            <p class="subtitle">
+        smaller words here
+      </p>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class='columns is-multiline'>
+                <div class='column is-4'>
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="https://images.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Placeholder image">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+          Make Informed Business Decisions
+        </div>
+                    </div>
+                </div>
+                <div class='column is-4'>
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="https://www.vets4pets.com/globalassets/close-up-of-cat-looking-up.jpg?w=585&scale=down" alt="Placeholder image">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+          Meet other people
+        </div>
+                    </div>
+                </div>
+                <div class='column is-4'>
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+                            </figure>
+                        </div>
+                        <div class="card-content"></div>
+                    </div>
+                </div>
+                <div class='column is-4'>
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+                            </figure>
+                        </div>
+                        <div class="card-content"></div>
+                    </div>
+                </div>
+                <div class='column is-4'>
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+                            </figure>
+                        </div>
+                        <div class="card-content"></div>
+                    </div>
+                </div>
+                <div class='column is-4'>
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+                            </figure>
+                        </div>
+                        <div class="card-content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

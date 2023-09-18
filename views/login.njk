@@ -1,0 +1,68 @@
+{% extends 'base.njk' %}
+
+{% block head %}
+    <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+{% endblock %}
+
+{% block body %}
+    <section class="hero is-primary is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+                        <h3 class="title has-text-white has-text-centered">Log In</h3>
+                        <hr class="login-hr">
+                        <p class="subtitle has-text-white has-text-centered">Please login to see our cool stuff!</p>
+                        <div class="box">
+                            <form action="login" method="POST">
+                                <div class="field">
+                                    <label for="email" class="label">Email</label>
+                                    <div class="control has-icons-left">
+                                        <input name="email" id="email" type="email" placeholder="jose@example.com" class="input" required="required">
+                                        <span class="icon is-small is-left">
+                                            <i class="fa fa-envelope"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="password" class="label">Password</label>
+                                    <div class="control has-icons-left">
+                                        <input name="password" id="password" type="password" placeholder="*******" class="input" required="required">
+                                        <span class="icon is-small is-left">
+                                            <i class="fa fa-lock"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="checkbox" class="checkbox">
+                                        <input type="checkbox" id="checkbox">
+                    Remember me
+                  </label>
+                                </div>
+                                <div class="field">
+                                    <button class="button is-info">
+                    Login
+                  </button>
+                                </div>
+                            </form>
+                            <hr class="login-hr">
+                            <p class="has-text-centered">Log In with Google</p>
+                            <div class="g-signin2 pt-4" data-onsuccess="onSignIn"></div>
+                        </div>
+                        <p class="has-text-white has-text-centered">
+                            <a href="">Register</a>
+              &nbsp;·&nbsp;
+              <a href="">Forgot Password</a>
+              &nbsp;·&nbsp;
+              <a href="">Contact Us</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- google sign in -->
+    <script src="https://apis.google.com/js/platform.js" async="async" defer="defer"></script>
+
+{% endblock %}

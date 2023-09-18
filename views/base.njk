@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="Tim's Site About Nothing"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="http://localhost"/>
+        <meta property="og:image" content="https://pbs.twimg.com/profile_images/1364633178128994304/yM-RJE7U_400x400.jpg"/>
+        <meta property="og:description" content="Express.js app built with <3."/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+        <title>
+            {% if title %}{{ title }}
+            {% else %}Welcome{% endif %}
+        </title>
+        {% block head %}{% endblock %}
+    </head>
+
+    <body>
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="https://bulma.io">
+                    <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+                </a>
+
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <a href="/games" class="navbar-item">
+            Games
+          </a>
+
+                    <a href="/streams" class="navbar-item">
+            Streams
+          </a>
+
+                    <a class="navbar-item">
+            Forums
+          </a>
+
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+              More
+            </a>
+
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item">
+                News
+              </a>
+                            <a class="navbar-item">
+                Knowledge Base
+              </a>
+                            <a class="navbar-item">
+                About
+              </a>
+                            <a class="navbar-item">
+                Shop
+              </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item">
+                Twitter
+              </a>
+                            <a class="navbar-item">
+                Discord
+              </a>
+
+                        </div>
+                    </div>
+                    <input class="input search" type="text" placeholder="Search for games, users, etc.">
+                </div>
+
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a href="/register" class="button is-primary">
+                                <strong>Sign up</strong>
+                            </a>
+                            <a href="/login" class="button is-light">
+                Log in
+              </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        {% block body %}{% endblock %}
+
+        <footer class="footer">
+            <div class="content has-text-centered">
+                <p>
+                    <strong>Bulma</strong>
+          by
+          <a href="https://jgthms.com">Jeremy Thomas</a>. The source code is licensed
+          <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content is licensed
+          <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+        </p>
+            </div>
+        </footer>
+
+        <!-- VUE JS development version, includes helpful console warnings -->
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+        <script defer="defer" src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        <script type="text/javascript" src="/js/base.js"></script>
+    </body>
+
+</html>

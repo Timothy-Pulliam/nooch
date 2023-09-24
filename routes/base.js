@@ -73,22 +73,26 @@ router.post('/register', (req, res) => {
                 newUser.save();
                 return res.status(200).json({ user: newUser });
             });
-
         };
     });
 });
 
-router.get('/search', async (req, res) => {
+router.get('/results', async (req, res) => {
     await axios.get(`https://trackapi.nutritionix.com/v2/search/instant?query=${req.query.query}`)
         .then(function (response) {
             // Avoid circular references within JSON object
             //obj_str = util.inspect(response);
             console.log(response.data.common); // common/branded items
-            res.send(response.data.common);
+            // res.json(response.data.common);
+            res.render('results', { data: response.data.common })
         })
         .catch(function (error) {
             console.log(error);
         });
+});
+
+router.get('/search', (req, res) => {
+    res.render('search.njk');
 });
 
 router.get('/nutrients', async (req, res) => {

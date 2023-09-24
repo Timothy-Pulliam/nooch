@@ -1,0 +1,11 @@
+{% extends "base.njk" %}
+
+{% block body %}
+
+    <form action="/results" method="get">
+        <label for="query">Search:</label>
+        <input type="text" id="query" name="query">
+        <input type="submit" value="Submit">
+    </form>
+
+{% endblock %}

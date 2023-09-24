@@ -7,6 +7,7 @@ const axios = require('axios');
 
 axios.defaults.headers.common['x-app-id'] = process.env.APP_ID;
 axios.defaults.headers.common['x-app-key'] = process.env.APP_KEY;
+axios.defaults.headers.common['x-remote-user-id'] = process.env.REMOTE_USER_ID;
 
 router.get(['/', '/index'], (req, res) => {
     var person = {

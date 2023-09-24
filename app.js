@@ -4,6 +4,7 @@ const path = require('path');
 const nunjucks = require('nunjucks');
 const redis = require('redis');
 const connectDB = require('./db.js');
+const morgan = require('morgan');
 
 
 // process.env.ENV_VAR
@@ -11,11 +12,12 @@ dotenv.config();
 
 const app = express();
 
-connectDB();
+// Use morgan middleware for logging
+if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'));
+}
 
-// if (process.env.NODE_ENV === 'development') {
-//     app.use(morgan('dev'));
-// }
+connectDB();
 
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded({ extended: true })); // to support URL-encoded bodies

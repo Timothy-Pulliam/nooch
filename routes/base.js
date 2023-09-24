@@ -4,6 +4,7 @@ const User = require('../models/userModel');
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
 const axios = require('axios');
+const util = require('util');
 
 axios.defaults.headers.common['x-app-id'] = process.env.APP_ID;
 axios.defaults.headers.common['x-app-key'] = process.env.APP_KEY;
@@ -11,9 +12,9 @@ axios.defaults.headers.common['x-remote-user-id'] = process.env.REMOTE_USER_ID;
 
 router.get(['/', '/index'], (req, res) => {
     var person = {
-                 name: "Tim"
-                 }
-    
+        name: "Tim"
+    }
+
     res.render("index.njk", person);
 });
 
@@ -52,13 +53,13 @@ router.get('/register', (req, res) => {
     res.render("register.njk");
 });
 
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
 
     var email = req.body.email;
     var password = req.body.password;
     var username = req.body.username;
 
-    User.findOne({ email: email }).then(user => {
+    await User.findOne({ email: email }).then(user => {
         if (user) {
             // throw 400 error if email already exists
             return res.status(400).json({ email: "A user has already registered with this email." });

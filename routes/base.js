@@ -7,6 +7,7 @@ const axios = require('axios');
 
 axios.defaults.headers.common['x-app-id'] = process.env.APP_ID;
 axios.defaults.headers.common['x-app-key'] = process.env.APP_KEY;
+axios.defaults.headers.common['x-remote-user-id'] = process.env.REMOTE_USER_ID;
 
 router.get(['/', '/index'], (req, res) => {
     var person = {
@@ -77,30 +78,32 @@ router.post('/register', (req, res) => {
     });
 });
 
-router.get('/search', function (req, res) {
-    axios.get('https://trackapi.nutritionix.com/v2/search/instant?query=apple')
+router.get('/search', async (req, res) => {
+    await axios.get(`https://trackapi.nutritionix.com/v2/search/instant?query=${req.query.query}`)
         .then(function (response) {
-            console.log(response.data.common);
+            // Avoid circular references within JSON object
+            //obj_str = util.inspect(response);
+            console.log(response.data.common); // common/branded items
+            res.send(response.data.common);
         })
         .catch(function (error) {
             console.log(error);
         });
-    res.send("OK");
 });
 
-router.get('/nutrients', function (req, res) {
+router.get('/nutrients', async (req, res) => {
     data = {
         "query": "apple",
         "timezone": "US/Eastern"
-    }
-    axios.post('https://trackapi.nutritionix.com/v2/natural/nutrients', data)
+    };
+    await axios.post('https://trackapi.nutritionix.com/v2/natural/nutrients', data)
         .then(function (response) {
             console.log(response.data.foods);
+            res.send(response.data.foods);
         })
         .catch(function (error) {
             console.log(error);
         });
-    res.send("OK");
 });
 
 // Match all other urls

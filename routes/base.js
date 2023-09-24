@@ -3,6 +3,10 @@ const router = express.Router();
 const User = require('../models/userModel');
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
+const axios = require('axios');
+
+axios.defaults.headers.common['x-app-id'] = process.env.APP_ID;
+axios.defaults.headers.common['x-app-key'] = process.env.APP_KEY;
 
 router.get(['/', '/index'], (req, res) => {
     var person = {
@@ -71,6 +75,32 @@ router.post('/register', (req, res) => {
 
         };
     });
+});
+
+router.get('/search', function (req, res) {
+    axios.get('https://trackapi.nutritionix.com/v2/search/instant?query=apple')
+        .then(function (response) {
+            console.log(response.data.common);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    res.send("OK");
+});
+
+router.get('/nutrients', function (req, res) {
+    data = {
+        "query": "apple",
+        "timezone": "US/Eastern"
+    }
+    axios.post('https://trackapi.nutritionix.com/v2/natural/nutrients', data)
+        .then(function (response) {
+            console.log(response.data.foods);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    res.send("OK");
 });
 
 // Match all other urls

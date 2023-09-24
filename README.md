@@ -42,7 +42,7 @@ axios
 
 Example Response
 
-```json
+```javascript
 [
   {
     food_name: 'apple',

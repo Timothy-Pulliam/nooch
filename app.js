@@ -24,6 +24,7 @@ app.use(express.urlencoded({ extended: true })); // to support URL-encoded bodie
 
 // Templating
 app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'njk')
 app.use(express.static('static'));
 nunjucks.configure('views', {
     autoescape: true,

@@ -27,6 +27,9 @@ $ docker-compose up --build
 
 https://publicapis.io/nutritionix-api
 
+Documentation
+https://docs.google.com/document/d/1_q-K-ObMTZvO0qUEAxROrN3bwMujwAN25sLHwJzliK0/edit
+
 Example Request
 
 ```javascript

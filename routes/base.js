@@ -6,24 +6,59 @@ const saltRounds = 10;
 const axios = require('axios');
 const util = require('util');
 
+// Nutritionx headers
 axios.defaults.headers.common['x-app-id'] = process.env.APP_ID;
 axios.defaults.headers.common['x-app-key'] = process.env.APP_KEY;
 axios.defaults.headers.common['x-remote-user-id'] = process.env.REMOTE_USER_ID;
 
 router.get(['/', '/index'], (req, res) => {
-    var person = {
-        name: "Tim"
-    }
-
-    res.render("index.njk", person);
+    res.render("index");
 });
+
+router.get('/register', (req, res) => {
+    res.render("register");
+});
+
+router.post('/register', async (req, res) => {
+    var email = req.body.email;
+    var password = req.body.password;
+
+    await User.findOne({ email: email }).then(user => {
+        if (user) {
+            // throw 400 error if email already exists
+            return res.status(400).json({ email: "A user has already registered with this email." });
+        } else {
+            // otherwise create a new user
+            bcrypt.hash(password, saltRounds, function (err, hash) {
+                const newUser = new User({
+                    email: email,
+                    password: hash
+                });
+                newUser.save();
+                // return res.status(200).json({ user: newUser });
+                res.redirect("/");
+            });
+        };
+    });
+});
+
 
 router.get('/login', (req, res) => {
-    res.render("login.njk")
+    res.render("login")
 });
 
+
+
 router.post('/login', async (req, res) => {
+
     try {
+        if (!req.body.email) {
+            res.json({ success: false, message: "Email was not given" })
+        }
+        if (!req.body.password) {
+            res.json({ success: false, message: "Password was not given" })
+        }
+
         // Find user by email
         const user = await User.findOne({ email: req.body.email });
         if (!user) {
@@ -37,7 +72,9 @@ router.post('/login', async (req, res) => {
         }
 
         // User is authenticated
-        res.json({ message: 'User authenticated' });
+        //res.json({ message: 'User authenticated' });
+        console.log("User is authenticated");
+        res.redirect('/');
 
     } catch (err) {
         console.error(err);
@@ -45,56 +82,35 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.get('/logout', (req, res) => {
-    res.sendFile(path.join(__dirname, "static", "logout.html"));
-});
+// router.get('/logout', (req, res) => {
+//     res.sendFile(path.join(__dirname, "static", "logout.html"));
+// });
 
-router.get('/register', (req, res) => {
-    res.render("register.njk");
-});
 
-router.post('/register', async (req, res) => {
 
-    var email = req.body.email;
-    var password = req.body.password;
-    var username = req.body.username;
 
-    await User.findOne({ email: email }).then(user => {
-        if (user) {
-            // throw 400 error if email already exists
-            return res.status(400).json({ email: "A user has already registered with this email." });
-        } else {
-            // otherwise create a new user
-            bcrypt.hash(password, saltRounds, function (err, hash) {
-                const newUser = new User({
-                    username: username,
-                    email: email,
-                    password: hash
-                });
-                newUser.save();
-                return res.status(200).json({ user: newUser });
+router.get('/search', async (req, res) => {
+
+    if (req.query.query != undefined) {
+        await axios.get(`https://trackapi.nutritionix.com/v2/search/instant?query=${req.query.query}`)
+            .then(function (response) {
+                // Avoid circular references within JSON object
+                //obj_str = util.inspect(response);
+                console.log(response.data.common); // common/branded items
+                // res.json(response.data.common);
+                res.render('search', { data: response.data.common })
+            })
+            .catch(function (error) {
+                console.log(error);
             });
-        };
-    });
+    } else {
+        res.render('search');
+    }
 });
 
-router.get('/results', async (req, res) => {
-    await axios.get(`https://trackapi.nutritionix.com/v2/search/instant?query=${req.query.query}`)
-        .then(function (response) {
-            // Avoid circular references within JSON object
-            //obj_str = util.inspect(response);
-            console.log(response.data.common); // common/branded items
-            // res.json(response.data.common);
-            res.render('results', { data: response.data.common })
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-});
-
-router.get('/search', (req, res) => {
-    res.render('search.njk');
-});
+// router.get('/search', (req, res) => {
+//     res.render('search.njk');
+// });
 
 router.get('/nutrients', async (req, res) => {
     data = {

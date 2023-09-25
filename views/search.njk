@@ -2,10 +2,23 @@
 
 {% block body %}
 
-    <form action="/results" method="get">
-        <label for="query">Search:</label>
-        <input type="text" id="query" name="query">
-        <input type="submit" value="Submit">
-    </form>
+    <section>
+        <form action="/search" method="get">
+            <label for="query">Search:</label>
+            <input type="text" id="query" name="query">
+            <input type="submit" value="Submit">
+        </form>
+    </section>
+
+    {% if data %}
+        <section>
+            <h2 class="title">Results</h2>
+            <table></table>
+                {% for item in data %}
+                    <li>{{ item.food_name }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+    {% endif %}
 
 {% endblock %}

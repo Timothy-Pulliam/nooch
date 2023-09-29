@@ -23,9 +23,9 @@ const UserSchema = new mongoose.Schema(
     });
 
 // TODO: understand this
-UserSchema.methods.matchPassword = async function (enteredPassword) {
-    return await bcrypt.compare(enteredPassword, this.password)
-}
+// UserSchema.methods.matchPassword = async function (enteredPassword) {
+//     return await bcrypt.compare(enteredPassword, this.password)
+// }
 
 // This doesn't work
 // UserSchema.pre('save', async function (next) {

@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/userModel');
 var bcrypt = require('bcrypt');
-const saltRounds = 10;
 const axios = require('axios');
 const util = require('util');
 
@@ -10,6 +9,10 @@ const util = require('util');
 axios.defaults.headers.common['x-app-id'] = process.env.APP_ID;
 axios.defaults.headers.common['x-app-key'] = process.env.APP_KEY;
 axios.defaults.headers.common['x-remote-user-id'] = process.env.REMOTE_USER_ID;
+
+// The work factor should be as large as verification server performance will allow, with a minimum of 10.
+// https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#bcrypt
+const saltRounds = 10;
 
 router.get(['/', '/index'], (req, res) => {
     res.render("index");
@@ -20,8 +23,21 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
+    if (!req.body.email) {
+        res.json({ success: false, message: "No email provided" });
+    }
+    if (!req.body.password) {
+        res.json({ success: false, message: "No password provided" });
+    }
+
     var email = req.body.email;
     var password = req.body.password;
+
+    // bcrypt algorithm doesn't work for passwords greater than 72 bytes
+    const passwordByteLength = Buffer.from(req.body.password).length;
+    if (passwordByteLength > 72) {
+        res.json({ success: false, message: "Password is too long" })
+    }
 
     await User.findOne({ email: email }).then(user => {
         if (user) {
@@ -48,38 +64,35 @@ router.get('/login', (req, res) => {
 });
 
 
-
 router.post('/login', async (req, res) => {
-
-    try {
-        if (!req.body.email) {
-            res.json({ success: false, message: "Email was not given" })
-        }
-        if (!req.body.password) {
-            res.json({ success: false, message: "Password was not given" })
-        }
-
-        // Find user by email
-        const user = await User.findOne({ email: req.body.email });
-        if (!user) {
-            return res.status(400).json({ message: 'User not found' });
-        }
-
-        // Compare password
-        const isMatch = await bcrypt.compare(req.body.password, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ message: 'Invalid credentials' });
-        }
-
-        // User is authenticated
-        //res.json({ message: 'User authenticated' });
-        console.log("User is authenticated");
-        res.redirect('/');
-
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server error' });
+    if (!req.body.email) {
+        res.json({ success: false, message: "No email provided" });
     }
+    if (!req.body.password) {
+        res.json({ success: false, message: "No password provided" });
+    }
+
+    // Timing Based Attacks
+    // https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#authentication-responses
+    const user = await User.findOne({ email: req.body.email });
+    // If no user found
+    if (!user) {
+        // https://blog.propelauth.com/understanding-timing-attacks-with-code/
+        await bcrypt.compare(req.body.password, '$2b$10$jIlWweLwZn78ZdzTzZpoqe5lagvoGQHnVzamrZ7P/XdFjtl9yGiBu');
+        return res.status(401).json({ message: 'Invalid username or password' });
+    }
+    bcrypt.compare(req.body.password, user.password, function (err, result) {
+        if (err) {
+            console.error(err);
+            return res.render('login');
+        }
+        if (result) {
+            console.log("User authenticated successfully");
+            return res.redirect('/');
+        } else {
+            return res.status(401).json({ message: 'Invalid username or password' });
+        }
+    });
 });
 
 // router.get('/logout', (req, res) => {
@@ -129,7 +142,7 @@ router.get('/nutrients', async (req, res) => {
 
 // Match all other urls
 router.get('*', function (req, res) {
-    res.send('Sorry, this is an invalid URL.');
+    res.render('404');
 });
 
 // export router to main app

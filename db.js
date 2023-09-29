@@ -28,6 +28,8 @@ const connectDB = async () => {
     }
 }
 
+
+
 // try initial connection
 // mongoose.connect(mongoURI, options)
 //     .catch(err => console.error(err));
